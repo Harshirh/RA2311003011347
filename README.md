@@ -18,3 +18,10 @@ This project implements a Priority Inbox for a campus notification microservice.
 
 ### Inbox View 3
 ![Inbox View 3](public/Screenshot%202026-05-02%20124645.png)
+
+### Inbox View 4
+![Inbox View 4](public/Screenshot 2026-05-02 125813.png)
+### Inbox View 5
+![Inbox View 4](public/Screenshot 2026-05-02 125900.png)
+### Inbox View 6
+![Inbox View 4](public/Screenshot 2026-05-02 125926.png)
