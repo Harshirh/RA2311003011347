@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL = "http://20.207.122.201/evaluation-service";
+export const API_BASE_URL = "/api/evaluation-service";
 
 export const registerUser = async (data: {
   email: string;
