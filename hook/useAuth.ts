@@ -12,13 +12,20 @@ export const useAuth = () => {
     try {
       const result = await registerUser(data);
       setLoading(false);
-      // We can't actually push this log to the server yet because we don't have a token,
-      // but it's strategically placed for when token tracking changes.
       Log('frontend', 'info', 'hook', 'User successfully registered.');
       return result;
     } catch (err: any) {
       setLoading(false);
-      const errorMsg = err.response?.data?.message || err.message || "Registration failed";
+      
+      let errorMsg = "Registration failed";
+      if (err.response?.data) {
+        if (err.response.data.message) errorMsg = err.response.data.message;
+        else if (err.response.data.errors) errorMsg = JSON.stringify(err.response.data.errors);
+        else if (typeof err.response.data === 'string') errorMsg = err.response.data;
+      } else if (err.message) {
+        errorMsg = err.message;
+      }
+      
       setError(errorMsg);
       Log('frontend', 'error', 'hook', `Registration error: ${errorMsg}`);
       throw err;
@@ -31,15 +38,20 @@ export const useAuth = () => {
     try {
       const result = await authenticateUser(data);
       setLoading(false);
-      
-      // Note: In an actual flow, we would want to ensure the token is saved 
-      // BEFORE this log executes so the logger has access to the newly minted token.
       Log('frontend', 'info', 'hook', 'User successfully authenticated and token obtained.');
-      
       return result;
     } catch (err: any) {
       setLoading(false);
-      const errorMsg = err.response?.data?.message || err.message || "Authentication failed";
+      
+      let errorMsg = "Authentication failed";
+      if (err.response?.data) {
+        if (err.response.data.message) errorMsg = err.response.data.message;
+        else if (err.response.data.errors) errorMsg = JSON.stringify(err.response.data.errors);
+        else if (typeof err.response.data === 'string') errorMsg = err.response.data;
+      } else if (err.message) {
+        errorMsg = err.message;
+      }
+
       setError(errorMsg);
       Log('frontend', 'error', 'hook', `Auth error: ${errorMsg}`);
       throw err;

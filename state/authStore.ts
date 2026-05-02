@@ -1,15 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-// Basic state wrapper for auth data
 export const useAuthStore = () => {
-  const [token, setToken] = useState<string | null>(null);
-  const [user, setUser] = useState<any>(null);
+  const [token, setToken] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('access_token');
+    }
+    return null;
+  });
+  
+  const [user, setUser] = useState<any>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('user_data');
+      return stored ? JSON.parse(stored) : null;
+    }
+    return null;
+  });
 
   const saveAuthData = (newToken: string, userData: any) => {
     setToken(newToken);
     setUser(userData);
     if (typeof window !== 'undefined') {
       localStorage.setItem('access_token', newToken);
+      localStorage.setItem('user_data', JSON.stringify(userData));
     }
   };
 
@@ -18,6 +30,7 @@ export const useAuthStore = () => {
     setUser(null);
     if (typeof window !== 'undefined') {
       localStorage.removeItem('access_token');
+      localStorage.removeItem('user_data');
     }
   };
 
